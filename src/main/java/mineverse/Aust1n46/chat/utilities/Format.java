@@ -968,10 +968,13 @@ public class Format {
 	}
 	
 	private static Sound getSound(String soundName) {
-		if(Arrays.asList(Sound.values()).stream().map(Sound::toString).collect(Collectors.toList()).contains(soundName)) {
-			return Sound.valueOf(soundName);
+		if (soundName == null) return getDefaultMessageSound();
+		try {
+			return Sound.valueOf(soundName.toUpperCase(Locale.ROOT));
+
+		} catch (IllegalArgumentException | NullPointerException ex) {
+			Bukkit.getConsoleSender().sendMessage(Format.FormatStringAll("&8[&eVentureChat&8]&c - Message sound invalid: " + soundName));
 		}
-		Bukkit.getConsoleSender().sendMessage(Format.FormatStringAll("&8[&eVentureChat&8]&c - Message sound invalid!"));
 		return getDefaultMessageSound();
 	}
 	
